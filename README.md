@@ -27,7 +27,7 @@ jobs:
           node-version: 24
       - uses: diffpal/lintpal-action@v1
         with:
-          lintpal-version: "0.4.0"
+          lintpal-version: "0.4.1"
           base: ${{ github.event.pull_request.base.sha }}
           head: ${{ github.event.pull_request.head.sha }}
           block-on: high

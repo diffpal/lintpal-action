@@ -10,7 +10,7 @@ inputs:
     default: "true"
   lintpal-version:
     description: Exact npm version or dist-tag.
-    default: "0.4.0"
+    default: "0.4.1"
   lintpal-path:
     description: Existing LintPal binary path; custom paths skip installation.
     default: lintpal

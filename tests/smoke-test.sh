@@ -22,8 +22,8 @@ mkdir -p "$prefix/bin"; printf '#!/usr/bin/env bash\nexit 0\n' > "$prefix/bin/li
 SCRIPT
 chmod +x "$tmp/bin/npm"
 PATH="$tmp/bin:$PATH" RUNNER_TEMP="$tmp/install" GITHUB_ENV="$tmp/env" NPM_ARGS="$tmp/npm-args" \
-  INPUT_INSTALL=true INPUT_LINTPAL_VERSION=0.4.0 INPUT_LINTPAL_PATH=lintpal "$root/scripts/install-lintpal.sh"
-grep -Fx 'lintpal@0.4.0' "$tmp/npm-args"
+  INPUT_INSTALL=true INPUT_LINTPAL_VERSION=0.4.1 INPUT_LINTPAL_PATH=lintpal "$root/scripts/install-lintpal.sh"
+grep -Fx 'lintpal@0.4.1' "$tmp/npm-args"
 grep -Fq 'LINTPAL_BIN=' "$tmp/env"
 
 run() {

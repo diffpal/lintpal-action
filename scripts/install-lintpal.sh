@@ -17,7 +17,7 @@ fi
 command -v npm >/dev/null || { echo 'npm is required to install lintpal' >&2; exit 127; }
 root="${RUNNER_TEMP:-/tmp}/lintpal-action"
 mkdir -p "$root"
-npm install --global --prefix "$root" "lintpal@${INPUT_LINTPAL_VERSION:-0.4.0}" --omit=dev --no-audit --no-fund
+npm install --global --prefix "$root" "lintpal@${INPUT_LINTPAL_VERSION:-0.4.1}" --omit=dev --no-audit --no-fund
 bin="$root/bin/lintpal"
 [[ -x "$bin" ]] || { echo "installed lintpal binary was not found: $bin" >&2; exit 127; }
 "$bin" version
