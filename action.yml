@@ -1,0 +1,103 @@
+name: LintPal
+description: Lint committed pull request changes against repository-owned rules.
+author: Alexey Samoylov
+branding:
+  icon: check-circle
+  color: blue
+inputs:
+  install:
+    description: Install LintPal before running.
+    default: "true"
+  lintpal-version:
+    description: Exact npm version or dist-tag.
+    default: "0.4.0"
+  lintpal-path:
+    description: Existing LintPal binary path; custom paths skip installation.
+    default: lintpal
+  base:
+    description: Base revision.
+    required: true
+  head:
+    description: Head revision.
+    required: true
+  provider:
+    description: Jev provider (jev, openrouter, or custom).
+    default: jev
+  model:
+    description: Optional System One model name or alias.
+    default: ""
+  rules:
+    description: Markdown rule directory.
+    default: .lintpal/rules
+  include:
+    description: Newline-delimited include globs.
+    default: ""
+  exclude:
+    description: Newline-delimited exclude globs.
+    default: ""
+  block-on:
+    description: Severity marked as blocking.
+    default: high
+  gate:
+    description: Return exit 10 after publication when blocking findings exist.
+    default: "true"
+  report-path:
+    description: Findings v5 artifact path.
+    default: .artifacts/lintpal/findings.json
+  review-channel:
+    description: Stable GitHub publication channel.
+    default: lintpal
+  repo:
+    description: GitHub repository owner/name; defaults from Actions context.
+    default: ""
+  pr-number:
+    description: Pull request number; defaults from Actions event.
+    default: ""
+  timeout:
+    description: Whole lint run timeout.
+    default: 2m
+  max-concurrency:
+    description: Provider worker count.
+    default: "4"
+  base-url:
+    description: Trusted custom provider base URL.
+    default: ""
+  auth-token-env:
+    description: Custom provider token environment name; never the token value.
+    default: ""
+outputs:
+  report-path:
+    description: Findings v5 artifact path.
+    value: ${{ steps.lintpal.outputs.report-path }}
+runs:
+  using: composite
+  steps:
+    - name: Install LintPal CLI
+      shell: bash
+      env:
+        INPUT_INSTALL: ${{ inputs.install }}
+        INPUT_LINTPAL_VERSION: ${{ inputs.lintpal-version }}
+        INPUT_LINTPAL_PATH: ${{ inputs.lintpal-path }}
+      run: ${{ github.action_path }}/scripts/install-lintpal.sh
+    - name: Lint and publish findings
+      id: lintpal
+      shell: bash
+      env:
+        INPUT_BASE: ${{ inputs.base }}
+        INPUT_HEAD: ${{ inputs.head }}
+        INPUT_PROVIDER: ${{ inputs.provider }}
+        INPUT_MODEL: ${{ inputs.model }}
+        INPUT_RULES: ${{ inputs.rules }}
+        INPUT_INCLUDE: ${{ inputs.include }}
+        INPUT_EXCLUDE: ${{ inputs.exclude }}
+        INPUT_BLOCK_ON: ${{ inputs.block-on }}
+        INPUT_GATE: ${{ inputs.gate }}
+        INPUT_REPORT_PATH: ${{ inputs.report-path }}
+        INPUT_REVIEW_CHANNEL: ${{ inputs.review-channel }}
+        INPUT_REPO: ${{ inputs.repo }}
+        INPUT_PR_NUMBER: ${{ inputs.pr-number }}
+        INPUT_TIMEOUT: ${{ inputs.timeout }}
+        INPUT_MAX_CONCURRENCY: ${{ inputs.max-concurrency }}
+        INPUT_BASE_URL: ${{ inputs.base-url }}
+        INPUT_AUTH_TOKEN_ENV: ${{ inputs.auth-token-env }}
+      run: ${{ github.action_path }}/scripts/run-lintpal.sh
